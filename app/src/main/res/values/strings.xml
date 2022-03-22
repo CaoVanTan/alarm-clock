@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AlarmClock</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="alarm_fragment">Báo thức</string>
+    <string name="clock_fragment">Đồng hồ</string>
+    <string name="stoptime_fragment">Bấm giờ</string>
+    <string name="timer_fragment">Hẹn giờ</string>
+</resources>
