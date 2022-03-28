@@ -4,21 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    android:layout_marginHorizontal="10dp"
     android:orientation="vertical"
-    android:layout_marginHorizontal="10dp">
+    tools:context=".MainActivity">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#dbe9f6"
         app:tabBackground="@color/white"
-        app:tabSelectedTextColor="@color/red"
-        app:tabIndicatorColor="@color/red"
-        app:tabTextColor="@color/black"
-        app:tabTextAppearance="@style/Theme.AlarmClock"
         app:tabGravity="fill"
-        />
+        app:tabIndicatorColor="@color/red"
+        app:tabSelectedTextColor="@color/red"
+        app:tabTextAppearance="@style/Theme.AlarmClock"
+        app:tabTextColor="@color/black" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"

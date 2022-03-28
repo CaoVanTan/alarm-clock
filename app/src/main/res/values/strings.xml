@@ -5,4 +5,6 @@
     <string name="clock_fragment">Đồng hồ</string>
     <string name="stoptime_fragment">Bấm giờ</string>
     <string name="timer_fragment">Hẹn giờ</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
