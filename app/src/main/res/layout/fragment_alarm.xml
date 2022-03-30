@@ -12,4 +12,17 @@
         android:text="@string/alarm_fragment"
         android:textSize="30sp"/>
 
+    <Button
+        android:id="@+id/Add_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/round_bottom_corner"
+        android:backgroundTint="@color/bg_nonfocus"
+        android:backgroundTintMode="add"
+        android:text="Thêm"
+        android:textColor="@color/black"
+        android:visibility="visible"></Button>
+
+
 </FrameLayout>
