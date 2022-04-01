@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    <!-- Thêm màu nền -->
+    android:background="#0F9D58"
+    android:padding="16dp"
+    tools:context="com.example.stopwatch">
+
+<TextView
+
+    <!-- Sử dụng text view "time_view" -->
+    <!-- Để hiển thị số giây -->
+    android:id="@+id/time_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+
+    <!-- Làm đồng hồ bấm giờ  -->
+    <!-- đẹp và lớn hơn -->
+    android:textAppearance="@android:style/TextAppearance.Large"
+    android:textSize="56sp" />
+
+<Button
+    <!-- Start button. -->
+    android:id="@+id/start_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="20dp"
+
+    <!-- Khi click vào Start Button -->
+    <!-- Hàm onClickStart() được gọi -->
+    android:onClick="onClickStart"
+    android:text="@string/start" />
+<Button
+
+    <!-- Stop button. -->
+    android:id="@+id/stop_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="8dp"
+
+    <!-- Khi click vào Stop button -->
+    <!-- Hàm onClickStop() được gọi -->
+    android:onClick="onClickStop"
+    android:text="@string/stop" />
+<Button
+
+    <!-- Reset button -->
+    android:id="@+id/reset_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="8dp"
+
+    <!-- Khi click vào Reset button -->
+    <!-- Hàm onClickReset() được gọi-->
+    android:onClick="onClickReset"
+    android:text="@string/reset" />
+    </LinearLayout>
