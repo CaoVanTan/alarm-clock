@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.RequiresApi;
@@ -14,8 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.app.Dialog;
+import android.widget.ListView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -42,6 +46,7 @@ public class AlarmFragment extends Fragment {
     Button btn_Ok;
     TimePicker timePicker;
     Calendar calendar;
+    ListView listView_alarm;
     PendingIntent pendingIntent;
 
     public AlarmFragment() {
@@ -80,29 +85,28 @@ public class AlarmFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View v = inflater.inflate(R.layout.fragment_alarm, container, false);
+
+        listView_alarm =(ListView)v.findViewById(R.id.list_alarm);
+
         myDialog = new Dialog(this.getContext());
         btn_them = v.findViewById(R.id.Add_btn);
-        calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
-        long current_time = calendar.getTimeInMillis();
+
+
         btn_them.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 myDialog.setContentView(R.layout.new_alarm_popup);
                 btn_Huy =(Button) myDialog.findViewById(R.id.close_btn);
                 timePicker = myDialog.findViewById(R.id.TimePikerAlarm);
                 timePicker.setIs24HourView(true);
-
                 btn_Huy.setOnClickListener(new View.OnClickListener() { //Event click Huy
                     @Override
                     public void onClick(View v) {
                         myDialog.dismiss();
                     }
                 });
-
-
                 btn_Ok = (Button) myDialog.findViewById(R.id.confirm_btn);
                 btn_Ok.setOnClickListener(new View.OnClickListener() {
                      // Event click tao moi
@@ -110,23 +114,9 @@ public class AlarmFragment extends Fragment {
                     public void onClick(View view) {
                         calendar.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
                         calendar.set(Calendar.MINUTE, timePicker.getCurrentMinute());
-                        SimpleDateFormat simpleHour = new SimpleDateFormat("dd:hh-mm-ss");
-                        SimpleDateFormat simpleMin = new SimpleDateFormat("mm");
-                        long set_time = calendar.getTimeInMillis();
-                        Alarm(set_time);
+                        UpdateTimeText(calendar, v.getContext());
+                        Alarm(calendar, 1);
                         myDialog.dismiss();
-                        if ((current_time-set_time)<0) // Hom nay
-                        {
-                            long Time_tday = set_time-current_time;
-                            String hour_tday = simpleHour.format(Time_tday);
-                            String min_tday  = simpleMin.format(Time_tday);
-                            Toast.makeText(v.getContext(),
-                                    "Chuông báo sẽ đổ sau "+hour_tday+"giờ, " + min_tday+ " phút nữa!" ,Toast.LENGTH_SHORT).show();
-                        }
-                        else if((current_time-set_time) >0) { // Ngay mai
-                        Toast.makeText(v.getContext(),
-                                "Chuông báo sẽ đổ vào "+"giờ" + "phút hôm nay! " ,Toast.LENGTH_SHORT).show();
-                        }
                     }
                 });
                 myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -135,11 +125,42 @@ public class AlarmFragment extends Fragment {
         });
         return v;
     }
-    public void Alarm(long calendar)
+    public void Alarm(Calendar calendar, int i)
     {
         Intent intent = new Intent(getActivity(), AlarmReceiver.class);
-        pendingIntent = PendingIntent.getBroadcast(myDialog.getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent = PendingIntent.getBroadcast(myDialog.getContext(), i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar,pendingIntent);
+        if (calendar.before(Calendar.getInstance()))
+        {
+            calendar.add(Calendar.DATE, 1);
+        }
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),pendingIntent);
+        intent.putExtra("toggle","on");
+    }
+    public void UpdateTimeText(Calendar calendar, Context context)
+    {
+        String timeText = "Chuông báo vào:";
+        timeText += DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime());
+        Toast.makeText(context, timeText ,Toast.LENGTH_SHORT).show();
+    }
+    public void CancelAlarm( int i){
+        Intent intent = new Intent(getActivity(), AlarmReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(myDialog.getContext(), i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
+        intent.putExtra("toggle","off");
+    }
+
+
+    class docJSON extends AsyncTask<String, Integer, String>{
+        @Override
+        protected String doInBackground(String... strings) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
     }
 }
