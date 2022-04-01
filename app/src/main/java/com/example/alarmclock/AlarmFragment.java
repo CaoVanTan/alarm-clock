@@ -18,7 +18,10 @@ import android.app.Dialog;
 import android.widget.ListView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
+import android.content.res.AssetManager;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
@@ -162,5 +165,13 @@ public class AlarmFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
         }
+    }
+    public void getJson ()
+    {
+
+    }
+    public  void writeJson(View v)
+    {
+
     }
 }
