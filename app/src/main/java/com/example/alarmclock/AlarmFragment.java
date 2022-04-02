@@ -9,13 +9,18 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.app.Dialog;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.content.res.AssetManager;
@@ -23,6 +28,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -51,6 +57,9 @@ public class AlarmFragment extends Fragment {
     Calendar calendar;
     ListView listView_alarm;
     PendingIntent pendingIntent;
+    SwitchCompat switchCompat;
+    AlarmDbHelper alarmDb;
+
 
     public AlarmFragment() {
         // Required empty public constructor
@@ -90,11 +99,36 @@ public class AlarmFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_alarm, container, false);
-
-        listView_alarm =(ListView)v.findViewById(R.id.list_alarm);
-
         myDialog = new Dialog(this.getContext());
-        btn_them = v.findViewById(R.id.Add_btn);
+        btn_them = v.findViewById(R.id.Add_alarm);
+
+        // Do du lieu vao listView
+        listView_alarm =(ListView)v.findViewById(R.id.list_alarm);
+        alarmDb = new AlarmDbHelper(getContext());
+        LoadListView(listView_alarm);
+
+
+
+        listView_alarm.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                switchCompat = (SwitchCompat) view.findViewById(R.id.SwitchAlarm);
+                TextView txt_Id = (TextView) view.findViewById(R.id.textId);
+                TextView txt_TimeLong = (TextView) view.findViewById(R.id.textLongTime);
+                switchCompat.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(switchCompat.isChecked()==true)
+                        {
+                            SetAlarm(Long.valueOf(txt_Id.getText().toString()), Integer.valueOf(txt_Id.toString()));
+                        }
+                        else{
+                            CancelAlarm(Integer.valueOf(txt_Id.toString()));
+                        }
+                    }
+                });
+            }
+        });
 
 
         btn_them.setOnClickListener(new View.OnClickListener() {
@@ -104,22 +138,32 @@ public class AlarmFragment extends Fragment {
                 btn_Huy =(Button) myDialog.findViewById(R.id.close_btn);
                 timePicker = myDialog.findViewById(R.id.TimePikerAlarm);
                 timePicker.setIs24HourView(true);
-                btn_Huy.setOnClickListener(new View.OnClickListener() { //Event click Huy
+                calendar = Calendar.getInstance();
+                //Event click Huy
+                btn_Huy.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         myDialog.dismiss();
                     }
                 });
+
+                // Event click tao moi
                 btn_Ok = (Button) myDialog.findViewById(R.id.confirm_btn);
                 btn_Ok.setOnClickListener(new View.OnClickListener() {
-                     // Event click tao moi
                     @Override
                     public void onClick(View view) {
                         calendar.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
                         calendar.set(Calendar.MINUTE, timePicker.getCurrentMinute());
-                        UpdateTimeText(calendar, v.getContext());
-                        Alarm(calendar, 1);
+                        calendar.set(Calendar.SECOND, 0);
+                        String Time = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime());
+                        Boolean On = true;
+                        Alarm_class new_alarm = new Alarm_class(Time,calendar.getTimeInMillis(), On);
+                        alarmDb.insertAlarm(new_alarm);
+                        Integer Id = alarmDb.getID(Time,calendar.getTimeInMillis());
+                        UpdateTimeText(Time, v.getContext());
+                        Alarm(calendar, Id);
                         myDialog.dismiss();
+                        LoadListView(listView_alarm);
                     }
                 });
                 myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -128,9 +172,13 @@ public class AlarmFragment extends Fragment {
         });
         return v;
     }
+
+
+
     public void Alarm(Calendar calendar, int i)
     {
         Intent intent = new Intent(getActivity(), AlarmReceiver.class);
+        Log.e("Id", String.valueOf(i));
         pendingIntent = PendingIntent.getBroadcast(myDialog.getContext(), i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
         if (calendar.before(Calendar.getInstance()))
@@ -140,38 +188,34 @@ public class AlarmFragment extends Fragment {
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),pendingIntent);
         intent.putExtra("toggle","on");
     }
-    public void UpdateTimeText(Calendar calendar, Context context)
+    public void SetAlarm(Long time, int i)
+    {
+        Log.e("Id", String.valueOf(i));
+        Intent intent = new Intent(getActivity(), AlarmReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(myDialog.getContext(), i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, time,pendingIntent);
+        intent.putExtra("toggle","on");
+    }
+    public void UpdateTimeText(String time, Context context)
     {
         String timeText = "Chuông báo vào:";
-        timeText += DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime());
+        timeText += time;
         Toast.makeText(context, timeText ,Toast.LENGTH_SHORT).show();
     }
     public void CancelAlarm( int i){
+        Log.e("Id", String.valueOf(i));
         Intent intent = new Intent(getActivity(), AlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(myDialog.getContext(), i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
         intent.putExtra("toggle","off");
     }
-
-
-    class docJSON extends AsyncTask<String, Integer, String>{
-        @Override
-        protected String doInBackground(String... strings) {
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-        }
-    }
-    public void getJson ()
-    {
-
-    }
-    public  void writeJson(View v)
-    {
-
+    public void LoadListView(ListView listView_alarm){
+        ArrayList<Alarm_class> alarm_list;
+        ListAdapter_Alarm alarm_Adapter;
+        alarm_list = alarmDb.getAlarm();
+        alarm_Adapter = new ListAdapter_Alarm(getContext(), R.layout.list_view_alarrm, alarm_list);
+        listView_alarm.setAdapter(alarm_Adapter);
     }
 }

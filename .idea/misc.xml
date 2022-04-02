@@ -15,13 +15,15 @@
         <entry key="..\:/Users/ADMIN/AndroidStudioProjects/alarm-clock/app/src/main/res/drawable/round_bottom_corner.xml" value="0.215" />
         <entry key="..\:/Users/ADMIN/AndroidStudioProjects/alarm-clock/app/src/main/res/drawable/round_corner_bg_main.xml" value="0.215" />
         <entry key="..\:/Users/ADMIN/AndroidStudioProjects/alarm-clock/app/src/main/res/drawable/round_top_corner.xml" value="0.2555" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/alarm-clock/app/src/main/res/drawable/thumb.xml" value="0.1325" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/alarm-clock/app/src/main/res/drawable/track.xml" value="0.1325" />
         <entry key="..\:/Users/ADMIN/AndroidStudioProjects/alarm-clock/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/ADMIN/AndroidStudioProjects/alarm-clock/app/src/main/res/layout/fragment_alarm.xml" value="0.1890625" />
         <entry key="..\:/Users/ADMIN/AndroidStudioProjects/alarm-clock/app/src/main/res/layout/fragment_blank.xml" value="0.3605072463768116" />
         <entry key="..\:/Users/ADMIN/AndroidStudioProjects/alarm-clock/app/src/main/res/layout/fragment_clock.xml" value="0.1890625" />
         <entry key="..\:/Users/ADMIN/AndroidStudioProjects/alarm-clock/app/src/main/res/layout/fragment_stoptime.xml" value="0.1890625" />
         <entry key="..\:/Users/ADMIN/AndroidStudioProjects/alarm-clock/app/src/main/res/layout/fragment_timer.xml" value="0.1890625" />
-        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/alarm-clock/app/src/main/res/layout/list_view_alarrm.xml" value="0.12563323201621074" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/alarm-clock/app/src/main/res/layout/list_view_alarrm.xml" value="0.67" />
         <entry key="..\:/Users/ADMIN/AndroidStudioProjects/alarm-clock/app/src/main/res/layout/new_alarm_popup.xml" value="0.22" />
       </map>
     </option>

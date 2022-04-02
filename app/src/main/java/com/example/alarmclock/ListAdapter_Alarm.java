@@ -33,9 +33,15 @@ public class ListAdapter_Alarm extends ArrayAdapter<Alarm_class> {
 
         Alarm_class a = getItem(position);
         if (a != null){
-            TextView txt1 = (TextView) v.findViewById(R.id.textAlarm);
-            txt1.setText(a.Thoigian);
             SwitchCompat switchCompat = (SwitchCompat) v.findViewById(R.id.SwitchAlarm);
+            TextView txt1 = (TextView) v.findViewById(R.id.textAlarm);
+            TextView txt_Id = (TextView) v.findViewById(R.id.textId);
+            TextView txt_Longtime = (TextView) v.findViewById(R.id.textLongTime);
+
+
+            txt1.setText(a.Thoigian);
+            txt_Id.setText(""+a.Id);
+            txt_Longtime.setText(""+a.Thoigian_long);
             switchCompat.setChecked(a.On_off);
         }
         return v;

@@ -19,13 +19,29 @@
         android:textSize="24dp"
         android:layout_marginRight="100dp"
         android:layout_gravity="left"/>
+    <TextView
+        android:id="@+id/textId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="text"
+        android:layout_marginRight="100dp"
+        android:visibility="gone"
+        android:layout_gravity="left"/>
+    <TextView
+        android:id="@+id/textLongTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="text"
+        android:visibility="gone"
+        android:layout_gravity="left"/>
+
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/SwitchAlarm"
-        android:background="@color/bg_focus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
+        android:background="@color/bg_focus"
         android:minHeight="32dp"
         android:thumb="@drawable/thumb"
         app:track="@drawable/track" />
