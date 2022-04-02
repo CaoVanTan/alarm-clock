@@ -21,7 +21,7 @@ public class RingAlarm  extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.e("REciver","Đã chạy 2");
-        alarmPlayer = MediaPlayer.create(this,R.raw.alarm_clock);
+//        alarmPlayer = MediaPlayer.create(this,R.raw.alarm_clock);
         alarmPlayer.start();
         return super.onStartCommand(intent, flags, startId);
     }
