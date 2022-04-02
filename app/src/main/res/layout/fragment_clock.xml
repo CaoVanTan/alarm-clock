@@ -6,10 +6,9 @@
     tools:context=".AlarmFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/clock_fragment"
-        android:textSize="30sp"/>
+        android:id="@+id/lvClock" />
 
 </FrameLayout>
