@@ -10,6 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AlarmClock">
         <activity
+            android:name=".ClockShowActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TimeZoneShowActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddClockActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

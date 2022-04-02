@@ -3,7 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Document/Code/AndroidProjects/AlarmClock/app/src/main/res/drawable/bg_search.xml" value="0.1525" />
+        <entry key="..\:/Document/Code/AndroidProjects/AlarmClock/app/src/main/res/drawable/button.xml" value="0.1525" />
+        <entry key="..\:/Document/Code/AndroidProjects/AlarmClock/app/src/main/res/drawable/custom_button.xml" value="0.1625" />
+        <entry key="..\:/Document/Code/AndroidProjects/AlarmClock/app/src/main/res/drawable/ic_add.xml" value="0.1625" />
+        <entry key="..\:/Document/Code/AndroidProjects/AlarmClock/app/src/main/res/drawable/ic_search.xml" value="0.14" />
+        <entry key="..\:/Document/Code/AndroidProjects/AlarmClock/app/src/main/res/layout/activity_add_clock.xml" value="0.10576923076923077" />
+        <entry key="..\:/Document/Code/AndroidProjects/AlarmClock/app/src/main/res/layout/activity_clock_show.xml" value="0.20260416666666667" />
         <entry key="..\:/Document/Code/AndroidProjects/AlarmClock/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Document/Code/AndroidProjects/AlarmClock/app/src/main/res/layout/activity_time_zone_show.xml" value="0.20260416666666667" />
         <entry key="..\:/Document/Code/AndroidProjects/AlarmClock/app/src/main/res/layout/fragment_alarm.xml" value="0.25" />
         <entry key="..\:/Document/Code/AndroidProjects/AlarmClock/app/src/main/res/layout/fragment_clock.xml" value="0.20260416666666667" />
         <entry key="..\:/Document/Code/AndroidProjects/AlarmClock/app/src/main/res/layout/fragment_clock_show.xml" value="0.20260416666666667" />

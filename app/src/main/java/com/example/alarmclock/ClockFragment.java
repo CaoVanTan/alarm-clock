@@ -1,10 +1,20 @@
 package com.example.alarmclock;
 
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -16,8 +26,12 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class ClockFragment extends Fragment {
-    ListView listView;
-    ArrayList<String> arrayList;
+    private View view;
+    ImageButton btnAddClock;
+    ListView lvClock;
+    ArrayList<TimeZoneData> timeZoneList;
+    CustomClockArrayAdapter clockArrayAdapter;
+    ClockDbHelper db;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -64,6 +78,40 @@ public class ClockFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_clock, container, false);
+        view = inflater.inflate(R.layout.fragment_clock, container, false);
+        btnAddClock = view.findViewById(R.id.btnAddClock);
+        lvClock = view.findViewById(R.id.lvClock);
+
+        db = new ClockDbHelper(getContext());
+        timeZoneList = db.getTimeZone();
+
+        clockArrayAdapter = new CustomClockArrayAdapter(getContext(), R.layout.activity_clock_show, timeZoneList);
+        lvClock.setAdapter(clockArrayAdapter);
+
+        lvClock.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                TimeZoneData timeZoneData;
+                timeZoneData = db.getTimeZoneById(position);
+                if(timeZoneData.getId() != position) {
+                    timeZoneData = new TimeZoneData(position, timeZoneList.get(position).getName(), timeZoneList.get(position).getTime());
+                    db.insertClock(timeZoneData);
+                }
+
+                Intent intent = new Intent(getActivity(), AddClockActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnAddClock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), AddClockActivity.class);
+                startActivity(intent);
+
+
+            }
+        });
+        return view;
     }
 }
