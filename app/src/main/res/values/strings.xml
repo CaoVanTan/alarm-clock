@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AlarmClock</string>
+    <string name="app_name">Alarm Clock</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="alarm_fragment">Báo thức</string>
     <string name="clock_fragment">Đồng hồ</string>
