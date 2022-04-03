@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AlarmClock">
         <activity
+            android:name=".Test"
+            android:exported="false" />
+        <activity
             android:name=".ClockShowActivity"
             android:exported="false" />
         <activity
@@ -17,7 +20,9 @@
             android:exported="false" />
         <activity
             android:name=".AddClockActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Thêm đồng hồ"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

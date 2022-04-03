@@ -5,12 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextClock;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.TimeZone;
 
 public class CustomClockArrayAdapter extends ArrayAdapter<TimeZoneData> {
     Context context;
@@ -33,19 +35,10 @@ public class CustomClockArrayAdapter extends ArrayAdapter<TimeZoneData> {
         TextView txtLocation = (TextView) convertView.findViewById(R.id.txtLocation1);
         txtLocation.setText(arrayList.get(position).getName());
 
-        TextView txtTime = (TextView) convertView.findViewById(R.id.txtTime);
-        txtTime.setText(getDisplayTime(arrayList.get(position).getTime()));
+        TextClock textClock = (TextClock) convertView.findViewById(R.id.txtTime);
+        TimeZone tz = TimeZone.getTimeZone(arrayList.get(position).getName());
+        textClock.setTimeZone(tz.toString());
 
         return convertView;
-    }
-
-    private String getDisplayTime(String timeName) {
-        String displayName = timeName;
-        int sep = timeName.indexOf(", ");
-        if (sep != -1) {
-            displayName = timeName.substring(sep + 1);
-        }
-
-        return displayName;
     }
 }

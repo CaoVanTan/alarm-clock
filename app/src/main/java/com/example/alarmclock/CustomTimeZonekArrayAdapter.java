@@ -35,18 +35,8 @@ public class CustomTimeZonekArrayAdapter extends ArrayAdapter<TimeZoneData> {
         txtLocation.setText(arrayList.get(position).getName());
 
         TextView txtGMT = (TextView) convertView.findViewById(R.id.txtGMT);
-        txtGMT.setText(getDisplayTimeZone(arrayList.get(position).getTime()));
+        txtGMT.setText(arrayList.get(position).getTimeZone());
 
         return convertView;
-    }
-
-    private String getDisplayTimeZone(String timeZoneName) {
-        String displayName = timeZoneName;
-        int sep = timeZoneName.indexOf(", ");
-        if (sep != -1) {
-            displayName = timeZoneName.substring(0, sep);
-        }
-
-        return displayName;
     }
 }

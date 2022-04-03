@@ -5,21 +5,24 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
-public class ClockDbHelper extends SQLiteOpenHelper {
+public class ClockDbHelper extends android.database.sqlite.SQLiteOpenHelper {
+    Context context;
     private static final String TAG = "ClockDbHelper";
     private static final String DATABASE_NAME = "Clock.db";
+    private static final int DATABASE_VERSION = 1;
     private static final String TABLE_CLOCK = "clock";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_NAME = "name";
     private static final String COLUMN_TIMEZONE = "timeZone";
 
     public ClockDbHelper(@Nullable Context context) {
-        super(context);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
@@ -74,21 +77,6 @@ public class ClockDbHelper extends SQLiteOpenHelper {
         return timeZoneList;
     }
 
-//    public void checkExistId(int id) {
-//        Log.i(TAG, "ClockDbHelper.checkExistId ... " + id);
-//
-//        SQLiteDatabase db = this.getReadableDatabase();
-//
-//        Cursor cursor = db.query(TABLE_CLOCK, new String[] { COLUMN_ID, COLUMN_NAME, COLUMN_TIMEZONE }, COLUMN_ID + "= ?",
-//                new String[] { String.valueOf(id) }, null, null, null, null);
-//        if (cursor != null)
-//            cursor.moveToFirst();
-//
-//        TimeZoneData timeZone = new TimeZoneData(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2));
-//
-//    }
-
-
     public void insertClock(TimeZoneData timeZone) {
         Log.i(TAG, "ClockDbHelper.insertClock ... " + timeZone.getId());
 
@@ -97,10 +85,9 @@ public class ClockDbHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_ID, timeZone.getId());
         values.put(COLUMN_NAME, timeZone.getName());
-        values.put(COLUMN_TIMEZONE, timeZone.getTime());
+        values.put(COLUMN_TIMEZONE, timeZone.getTimeZone());
 
         db.insert(TABLE_CLOCK, null, values);
-
         db.close();
     }
 
@@ -109,6 +96,7 @@ public class ClockDbHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_CLOCK, COLUMN_ID + " = ?", new String[] { String.valueOf(id) });
+
         db.close();
     }
 }

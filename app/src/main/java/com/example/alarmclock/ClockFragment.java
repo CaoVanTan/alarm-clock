@@ -1,5 +1,9 @@
 package com.example.alarmclock;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -9,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
@@ -16,8 +21,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -27,7 +37,7 @@ import java.util.ArrayList;
  */
 public class ClockFragment extends Fragment {
     private View view;
-    ImageButton btnAddClock;
+    FloatingActionButton btnAddClock;
     ListView lvClock;
     ArrayList<TimeZoneData> timeZoneList;
     CustomClockArrayAdapter clockArrayAdapter;
@@ -75,8 +85,7 @@ public class ClockFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_clock, container, false);
         btnAddClock = view.findViewById(R.id.btnAddClock);
@@ -88,18 +97,13 @@ public class ClockFragment extends Fragment {
         clockArrayAdapter = new CustomClockArrayAdapter(getContext(), R.layout.activity_clock_show, timeZoneList);
         lvClock.setAdapter(clockArrayAdapter);
 
-        lvClock.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                TimeZoneData timeZoneData;
-                timeZoneData = db.getTimeZoneById(position);
-                if(timeZoneData.getId() != position) {
-                    timeZoneData = new TimeZoneData(position, timeZoneList.get(position).getName(), timeZoneList.get(position).getTime());
-                    db.insertClock(timeZoneData);
-                }
 
-                Intent intent = new Intent(getActivity(), AddClockActivity.class);
-                startActivity(intent);
+        lvClock.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+                confirmDialog(position);
+
+                return false;
             }
         });
 
@@ -108,10 +112,40 @@ public class ClockFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AddClockActivity.class);
                 startActivity(intent);
-
-
             }
         });
+
         return view;
+    }
+
+    private void confirmDialog(int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Xóa " + timeZoneList.get(position).getName() + "?");
+        builder.setMessage("Bạn có muốn xóa không?");
+
+        builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                db = new ClockDbHelper(getContext());
+                db.deleteTimeZone(timeZoneList.get(position).getId());
+
+//                Reload list view
+                clockArrayAdapter.clear();
+                db = new ClockDbHelper(getContext());
+                timeZoneList = db.getTimeZone();
+                clockArrayAdapter = new CustomClockArrayAdapter(getContext(), R.layout.activity_clock_show, timeZoneList);
+                lvClock.setAdapter(clockArrayAdapter);
+
+                Toast.makeText(getContext(), "Xóa thành công!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+
+        builder.create().show();
     }
 }

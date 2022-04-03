@@ -3,12 +3,12 @@ package com.example.alarmclock;
 public class TimeZoneData {
     public int id;
     public String name;
-    public String time;
+    public String timeZone;
 
-    public TimeZoneData(int id, String name, String time) {
+    public TimeZoneData(int id, String name, String timeZone) {
         this.id = id;
         this.name = name;
-        this.time = time;
+        this.timeZone = timeZone;
     }
 
     public TimeZoneData() {
@@ -22,7 +22,7 @@ public class TimeZoneData {
         return name;
     }
 
-    public String getTime() {
-        return time;
+    public String getTimeZone() {
+        return timeZone;
     }
 }

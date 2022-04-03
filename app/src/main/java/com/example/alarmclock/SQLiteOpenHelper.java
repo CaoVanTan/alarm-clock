@@ -6,8 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import androidx.annotation.Nullable;
 
 public class SQLiteOpenHelper extends android.database.sqlite.SQLiteOpenHelper {
-    public static final String DATABASE_NAME = "clock.db";
-    public static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "clock.db";
+    private static final int DATABASE_VERSION = 1;
     private static final String TABLE_CLOCK = "clock";
     private static final String COLUMN_ID ="id";
     private static final String COLUMN_Name ="name";
