@@ -1,13 +1,16 @@
 package com.example.alarmclock;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -20,24 +23,42 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class AddClockActivity extends AppCompatActivity {
-    ListView lvTimeZone;
+    RecyclerView rvTimeZone;
     EditText inputSearch;
     SimpleDateFormat dateFormat;
     TimeZone timeZone;
     Date now;
     String[] listItems;
     ArrayList<TimeZoneData> timeZoneList;
-    CustomTimeZonekArrayAdapter timeZoneArrayAdapter;
-    ClockDbHelper db;
+    TimeZoneAdapter timeZoneAdapter;
+    RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_clock);
 
-        lvTimeZone = (ListView) findViewById(R.id.lvTimeZone);
-        inputSearch = (EditText) findViewById(R.id.inputSearch);
+        createTimeZoneList();
+        buildRecyclerView();
 
+        inputSearch = (EditText) findViewById(R.id.inputSearch);
+        inputSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                filter(editable.toString());
+            }
+        });
+    }
+
+    private void createTimeZoneList() {
         timeZoneList = new ArrayList<>();
         listItems = TimeZone.getAvailableIDs();
         dateFormat = new SimpleDateFormat("ZZZZ");
@@ -46,55 +67,30 @@ public class AddClockActivity extends AppCompatActivity {
         for (int i = 0; i < listItems.length; ++i) {
             timeZone = TimeZone.getTimeZone(listItems[i]);
             dateFormat.setTimeZone(timeZone);
-            TimeZoneData timeZoneData = new TimeZoneData(i, getDisplayName(listItems[i]), dateFormat.format(now));
+            TimeZoneData timeZoneData = new TimeZoneData(i, listItems[i], dateFormat.format(now));
             timeZoneList.add(timeZoneData);
         }
+    }
 
-        timeZoneArrayAdapter = new CustomTimeZonekArrayAdapter(AddClockActivity.this, R.layout.activity_time_zone_show, timeZoneList);
-        lvTimeZone.setAdapter(timeZoneArrayAdapter);
+    private void buildRecyclerView() {
+        rvTimeZone = (RecyclerView) findViewById(R.id.rvTimeZone);
+        rvTimeZone.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rvTimeZone.setLayoutManager(layoutManager);
+        timeZoneAdapter = new TimeZoneAdapter(AddClockActivity.this, timeZoneList);
+        rvTimeZone.setAdapter(timeZoneAdapter);
+    }
 
-        db = new ClockDbHelper(this);
+    private void filter(String text) {
+        ArrayList<TimeZoneData> filteredList = new ArrayList<>();
 
-        lvTimeZone.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                Kiểm tra tồn tại ID
-                TimeZoneData timeZoneData;
-                timeZoneData = new TimeZoneData(position, timeZoneList.get(position).getName(), timeZoneList.get(position).getTimeZone());
-                db.insertClock(timeZoneData);
-
-                Toast.makeText(AddClockActivity.this, "Thêm thành công!", Toast.LENGTH_SHORT).show();
-
-//                final Handler handler = new Handler();
-//                handler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Intent intent = new Intent(AddClockActivity.this, ClockFragment.class);
-//                        startActivity(intent);
-//                    }
-//                }, 100);
-                Intent intent = new Intent(AddClockActivity.this, ClockFragment.class);
-                startActivity(intent);
-//                finish();
+        for (TimeZoneData timezone : timeZoneList) {
+            if (getDisplayName(timezone.getName()).toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(timezone);
             }
-        });
+        }
 
-//        inputSearch.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//                filter(s.toString());
-//            }
-//        });
+        timeZoneAdapter.filterList(filteredList);
     }
 
     private String getDisplayName(String timeZoneName) {
@@ -107,8 +103,4 @@ public class AddClockActivity extends AppCompatActivity {
 
         return displayName;
     }
-
-//    private void filter(String text) {
-//        timeZoneList = new ArrayList<>();
-//    }
 }

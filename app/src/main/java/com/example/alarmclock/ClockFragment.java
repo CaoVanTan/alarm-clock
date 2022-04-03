@@ -30,11 +30,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ClockFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ClockFragment extends Fragment {
     private View view;
     FloatingActionButton btnAddClock;
@@ -53,25 +48,6 @@ public class ClockFragment extends Fragment {
     private String mParam2;
 
     public ClockFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AlarmFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ClockFragment newInstance(String param1, String param2) {
-        ClockFragment fragment = new ClockFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -81,7 +57,6 @@ public class ClockFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
     }
 
     @Override
@@ -90,19 +65,15 @@ public class ClockFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_clock, container, false);
         btnAddClock = view.findViewById(R.id.btnAddClock);
         lvClock = view.findViewById(R.id.lvClock);
-
         db = new ClockDbHelper(getContext());
         timeZoneList = db.getTimeZone();
-
         clockArrayAdapter = new CustomClockArrayAdapter(getContext(), R.layout.activity_clock_show, timeZoneList);
         lvClock.setAdapter(clockArrayAdapter);
-
 
         lvClock.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
                 confirmDialog(position);
-
                 return false;
             }
         });

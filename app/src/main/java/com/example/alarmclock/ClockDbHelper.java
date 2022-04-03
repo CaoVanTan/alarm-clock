@@ -42,19 +42,21 @@ public class ClockDbHelper extends android.database.sqlite.SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public TimeZoneData getTimeZoneById(int id) {
+    public boolean getTimeZoneById(int id) {
         Log.i(TAG, "ClockDbHelper.getTimeZoneById ... " + id);
 
         SQLiteDatabase db = this.getReadableDatabase();
-
         Cursor cursor = db.query(TABLE_CLOCK, new String[] { COLUMN_ID, COLUMN_NAME, COLUMN_TIMEZONE }, COLUMN_ID + "= ?",
                                 new String[] { String.valueOf(id) }, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
 
-        TimeZoneData timeZone = new TimeZoneData(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2));
+        boolean check;
+        if (cursor.getCount() > 0) {
+            check = true;
+        } else {
+            check = false;
+        }
 
-        return timeZone;
+        return check;
     }
 
     public ArrayList<TimeZoneData> getTimeZone() {
@@ -62,7 +64,6 @@ public class ClockDbHelper extends android.database.sqlite.SQLiteOpenHelper {
 
         ArrayList<TimeZoneData> timeZoneList = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_CLOCK;
-
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
@@ -81,13 +82,12 @@ public class ClockDbHelper extends android.database.sqlite.SQLiteOpenHelper {
         Log.i(TAG, "ClockDbHelper.insertClock ... " + timeZone.getId());
 
         SQLiteDatabase db = this.getWritableDatabase();
-
         ContentValues values = new ContentValues();
         values.put(COLUMN_ID, timeZone.getId());
         values.put(COLUMN_NAME, timeZone.getName());
         values.put(COLUMN_TIMEZONE, timeZone.getTimeZone());
-
         db.insert(TABLE_CLOCK, null, values);
+
         db.close();
     }
 

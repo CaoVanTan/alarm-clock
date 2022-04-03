@@ -1,6 +1,7 @@
 package com.example.alarmclock;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.TimeZone;
 
@@ -18,6 +20,7 @@ public class CustomClockArrayAdapter extends ArrayAdapter<TimeZoneData> {
     Context context;
     ArrayList<TimeZoneData> arrayList;
     int layoutResource;
+    ClockDbHelper db;
 
     public CustomClockArrayAdapter(Context context, int resource, ArrayList<TimeZoneData> objects) {
         super(context, resource, objects);
@@ -33,12 +36,23 @@ public class CustomClockArrayAdapter extends ArrayAdapter<TimeZoneData> {
         convertView = inflater.inflate(layoutResource, null);
 
         TextView txtLocation = (TextView) convertView.findViewById(R.id.txtLocation1);
-        txtLocation.setText(arrayList.get(position).getName());
+        txtLocation.setText(getDisplayName(arrayList.get(position).getName()));
 
+        db = new ClockDbHelper(context);
         TextClock textClock = (TextClock) convertView.findViewById(R.id.txtTime);
-        TimeZone tz = TimeZone.getTimeZone(arrayList.get(position).getName());
-        textClock.setTimeZone(tz.toString());
+        textClock.setTimeZone(db.getTimeZone().get(position).getName());
 
         return convertView;
+    }
+
+    private String getDisplayName(String timeZoneName) {
+        String displayName = timeZoneName;
+        int sep = timeZoneName.indexOf("/");
+        if (sep != -1) {
+            displayName = timeZoneName.substring(0, sep) + ", " + timeZoneName.substring(sep + 1);
+            displayName = displayName.replace("_", " ");
+        }
+
+        return displayName;
     }
 }
