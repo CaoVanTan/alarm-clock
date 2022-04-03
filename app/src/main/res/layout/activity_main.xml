@@ -5,24 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginHorizontal="10dp"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#dbe9f6"
-        app:tabBackground="@color/white"
-        app:tabGravity="fill"
-        app:tabIndicatorColor="@color/red"
-        app:tabSelectedTextColor="@color/red"
-        app:tabTextAppearance="@style/Theme.AlarmClock"
-        app:tabTextColor="@color/black" />
+    tools:context=".MainActivity"
+    android:background="@drawable/bg_main"
+    android:orientation="vertical">
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:tabBackground="@color/white"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/bg_nonfocus"
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextAppearance="@style/Theme.AlarmClock"
+            app:tabTextColor="@color/black" />
+    </androidx.viewpager.widget.ViewPager>
 
 </LinearLayout>
