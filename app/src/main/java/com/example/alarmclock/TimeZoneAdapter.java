@@ -40,8 +40,9 @@ public class TimeZoneAdapter extends RecyclerView.Adapter<TimeZoneAdapter.TimeZo
     @Override
     public void onBindViewHolder(@NonNull TimeZoneAdapter.TimeZoneViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.txtId.setText(String.valueOf(timeZoneList.get(position).getId()));
-        holder.txtLocation.setText(getDisplayName(timeZoneList.get(position).getName()));
+        holder.txtLocation.setText(getLocation(timeZoneList.get(position).getName()));
         holder.txtGMT.setText(timeZoneList.get(position).getTimeZone());
+        holder.txtCountry.setText(getCountryName(timeZoneList.get(position).getName()));
 
         db = new ClockDbHelper(context);
         holder.layoutShowTimeZone.setOnClickListener(new View.OnClickListener() {
@@ -49,7 +50,7 @@ public class TimeZoneAdapter extends RecyclerView.Adapter<TimeZoneAdapter.TimeZo
             public void onClick(View view) {
                 TimeZoneData timeZoneData;
 
-                if(!db.getTimeZoneById(position)) {
+                if (!db.getTimeZoneById(position)) {
                     timeZoneData = new TimeZoneData(timeZoneList.get(position).getId(), timeZoneList.get(position).getName(), timeZoneList.get(position).getTimeZone());
                     db.insertClock(timeZoneData);
                     Toast.makeText(context, "Thêm thành công!", Toast.LENGTH_SHORT).show();
@@ -69,7 +70,7 @@ public class TimeZoneAdapter extends RecyclerView.Adapter<TimeZoneAdapter.TimeZo
     }
 
     public class TimeZoneViewHolder extends RecyclerView.ViewHolder {
-        TextView txtId, txtLocation, txtGMT;
+        TextView txtId, txtLocation, txtGMT, txtCountry;
         LinearLayout layoutShowTimeZone;
 
         public TimeZoneViewHolder(@NonNull View itemView) {
@@ -77,16 +78,56 @@ public class TimeZoneAdapter extends RecyclerView.Adapter<TimeZoneAdapter.TimeZo
             txtId = itemView.findViewById(R.id.txtId);
             txtLocation = itemView.findViewById(R.id.txtLocation);
             txtGMT = itemView.findViewById(R.id.txtGMT);
+            txtCountry = itemView.findViewById(R.id.txtCountry);
             layoutShowTimeZone = itemView.findViewById(R.id.layoutShowTimeZone);
         }
     }
 
-    private String getDisplayName(String timeZoneName) {
+    private String getLocation(String timeZoneName) {
         String displayName = timeZoneName;
-        int sep = timeZoneName.indexOf("/");
-        if (sep != -1) {
-            displayName = timeZoneName.substring(0, sep) + ", " + timeZoneName.substring(sep + 1);
+        StringBuilder str = new StringBuilder(timeZoneName);
+        String timeZoneNameRev = str.reverse().toString();
+        int sepRev = timeZoneNameRev.indexOf("/");
+        if (sepRev != -1) {
+            displayName = timeZoneNameRev.substring(0, sepRev);
+            StringBuilder str1 = new StringBuilder(displayName);
+            displayName = str1.reverse().toString();
             displayName = displayName.replace("_", " ");
+        } else {
+            displayName = timeZoneName;
+        }
+
+        return displayName;
+    }
+
+    private String getCountryName(String timeZoneName) {
+        String displayName = timeZoneName;
+        int count = 0;
+        int sep = timeZoneName.indexOf("/");
+
+        for (int i = 0; i < displayName.length(); i++) {
+            if (displayName.charAt(i) == '/') {
+                count++;
+            }
+        }
+
+        if (count == 0) {
+            displayName = "";
+        }
+        else if (count == 1) {
+            displayName = timeZoneName.substring(0, sep);
+            displayName = displayName.replace("_", " ");
+        }
+        else {
+            StringBuilder str = new StringBuilder(timeZoneName);
+            String timeZoneNameRev = str.reverse().toString();
+            int sepRev = timeZoneNameRev.indexOf("/");
+            if (sepRev != -1) {
+                displayName = timeZoneNameRev.substring(sepRev + 1);
+                StringBuilder str1 = new StringBuilder(displayName);
+                displayName = str1.reverse().toString();
+                displayName = displayName.replace("/", ", ");
+            }
         }
 
         return displayName;
