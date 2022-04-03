@@ -1,48 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:orientation="horizontal"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".MainActivity"
-    android:layout_marginStart="100dp"
-    android:background="@drawable/bg_list_view_nonfocus"
-    android:layout_marginEnd="100dp"
-    android:layout_marginTop="5dp">
+    android:orientation="horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:descendantFocusability = "blocksDescendants"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="10"
+        android:orientation="horizontal"
+        android:padding="6dp">
 
-    <TextView
-        android:id="@+id/textAlarm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="text"
-        android:textSize="24dp"
-        android:layout_marginRight="100dp"
-        android:layout_gravity="left"/>
-    <TextView
-        android:id="@+id/textId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="text"
-        android:layout_marginRight="100dp"
-        android:visibility="gone"
-        android:layout_gravity="left"/>
-    <TextView
-        android:id="@+id/textLongTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="text"
-        android:visibility="gone"
-        android:layout_gravity="left"/>
+        <TextView
+            android:id="@+id/textAlarm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:text="00:00"
+            android:textSize="36sp"/>
 
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/SwitchAlarm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:background="@color/bg_focus"
-        android:minHeight="32dp"
-        android:thumb="@drawable/thumb"
-        app:track="@drawable/track" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:orientation="vertical"
+            android:layout_margin="2dp">
+
+            <TextView
+                android:id="@+id/item_alarm_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+            <TextView
+                android:id="@+id/textId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="text"
+                android:visibility="gone" />
+            <TextView
+                android:id="@+id/textLongTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="text"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/SwitchAlarm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:minHeight="48dp"
+            android:thumb="@drawable/thumb"
+            app:track="@drawable/track" />
+    </LinearLayout>
 </LinearLayout>

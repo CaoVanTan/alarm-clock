@@ -1,7 +1,11 @@
 package com.example.alarmclock;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -19,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.app.Dialog;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -59,6 +64,8 @@ public class AlarmFragment extends Fragment {
     PendingIntent pendingIntent;
     SwitchCompat switchCompat;
     AlarmDbHelper alarmDb;
+    ArrayList<Alarm_class> alarm_list;
+    ListAdapter_Alarm alarm_Adapter;
 
 
     public AlarmFragment() {
@@ -101,34 +108,51 @@ public class AlarmFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_alarm, container, false);
         myDialog = new Dialog(this.getContext());
         btn_them = v.findViewById(R.id.Add_alarm);
-
+        createNotificationChannnel();
         // Do du lieu vao listView
+
+
         listView_alarm =(ListView)v.findViewById(R.id.list_alarm);
         alarmDb = new AlarmDbHelper(getContext());
-        LoadListView(listView_alarm);
 
-
-
+        ListAdapter_Alarm alarm_Adapter;
+        alarm_list = alarmDb.getAlarm();
+        alarm_Adapter = new ListAdapter_Alarm(getContext(), R.layout.list_view_alarrm, alarm_list);
+        listView_alarm.setAdapter(alarm_Adapter);
         listView_alarm.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 switchCompat = (SwitchCompat) view.findViewById(R.id.SwitchAlarm);
-                TextView txt_Id = (TextView) view.findViewById(R.id.textId);
-                TextView txt_TimeLong = (TextView) view.findViewById(R.id.textLongTime);
-                switchCompat.setOnClickListener(new View.OnClickListener() {
+                Integer id = alarm_list.get(position).getId();
+                String date = alarm_list.get(position).getThoigian();
+                Long time_long = alarm_list.get(position).getThoigian_long();
+                Log.e("Id", id.toString());
+                switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
-                    public void onClick(View view) {
-                        if(switchCompat.isChecked()==true)
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                        Log.e("Id", id.toString());
+                        if(isChecked == true)
                         {
-                            SetAlarm(Long.valueOf(txt_Id.getText().toString()), Integer.valueOf(txt_Id.toString()));
+                            SetAlarm(time_long, date,id);
+                            alarmDb.updateAlarm_isChecked(id,isChecked);
                         }
-                        else{
-                            CancelAlarm(Integer.valueOf(txt_Id.toString()));
+                        else {
+                            CancelAlarm(id);
+                            alarmDb.updateAlarm_isChecked(id,isChecked);
                         }
                     }
                 });
             }
         });
+
+        listView_alarm.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                confirmDialog(i);
+                return false;
+            }
+        });
+
 
 
         btn_them.setOnClickListener(new View.OnClickListener() {
@@ -173,12 +197,35 @@ public class AlarmFragment extends Fragment {
         return v;
     }
 
+    private void confirmDialog(int pos) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Xóa " + alarm_list.get(pos).getThoigian() + "?");
+        builder.setMessage("Bạn có muốn xóa không?");
+
+        builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                alarmDb.deleteAlarm(alarm_list.get(pos).getId());
+//                alarm_Adapter.clear();
+                alarm_list = alarmDb.getAlarm();
+                alarm_Adapter = new ListAdapter_Alarm(getContext(), R.layout.list_view_alarrm, alarm_list);
+                listView_alarm.setAdapter(alarm_Adapter);
+                Toast.makeText(getContext(), "Xóa thành công!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        builder.create().show();
+    }
 
 
     public void Alarm(Calendar calendar, int i)
     {
         Intent intent = new Intent(getActivity(), AlarmReceiver.class);
-        Log.e("Id", String.valueOf(i));
+        Log.e("Set New Alarm:", String.valueOf(i));
         pendingIntent = PendingIntent.getBroadcast(myDialog.getContext(), i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
         if (calendar.before(Calendar.getInstance()))
@@ -186,15 +233,17 @@ public class AlarmFragment extends Fragment {
             calendar.add(Calendar.DATE, 1);
         }
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),pendingIntent);
+        intent.putExtra("text",DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime()));
         intent.putExtra("toggle","on");
     }
-    public void SetAlarm(Long time, int i)
+    public void SetAlarm(Long time, String text ,int i)
     {
-        Log.e("Id", String.valueOf(i));
+        Log.e("SetAlarm", String.valueOf(i));
         Intent intent = new Intent(getActivity(), AlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(myDialog.getContext(), i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, time,pendingIntent);
+        intent.putExtra("text", text);
         intent.putExtra("toggle","on");
     }
     public void UpdateTimeText(String time, Context context)
@@ -204,7 +253,7 @@ public class AlarmFragment extends Fragment {
         Toast.makeText(context, timeText ,Toast.LENGTH_SHORT).show();
     }
     public void CancelAlarm( int i){
-        Log.e("Id", String.valueOf(i));
+        Log.e("CancelAlarm: ", String.valueOf(i));
         Intent intent = new Intent(getActivity(), AlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(myDialog.getContext(), i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
@@ -218,4 +267,16 @@ public class AlarmFragment extends Fragment {
         alarm_Adapter = new ListAdapter_Alarm(getContext(), R.layout.list_view_alarrm, alarm_list);
         listView_alarm.setAdapter(alarm_Adapter);
     }
+    public void createNotificationChannnel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Alarm";
+            String des = "Alarm Manager";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel serviceChannel = new NotificationChannel( "Alarm", name,importance);
+            NotificationManager manager = getActivity().getSystemService(NotificationManager.class);
+            serviceChannel.setDescription(des);
+            manager.createNotificationChannel(serviceChannel);
+        }
+    }
+
 }

@@ -1,16 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AlarmFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/alarm_fragment"
+        android:textSize="30sp"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+
+        android:id="@+id/list_alarm"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/alarm_fragment"
-        android:textSize="30sp"/>
+        android:layout_marginTop="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="1.0">
+
+    </ListView>
 
     <Button
         android:id="@+id/Add_alarm"
@@ -22,13 +39,8 @@
         android:backgroundTintMode="add"
         android:text="Thêm"
         android:textColor="@color/black"
-        android:visibility="visible"></Button>
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/list_alarm"
+        app:layout_constraintEnd_toEndOf="parent"></Button>
 
-    <ListView
-        android:id="@+id/list_alarm"
-        android:background="@drawable/bg_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

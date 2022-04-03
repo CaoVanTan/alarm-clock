@@ -38,19 +38,27 @@ public class AlarmDbHelper extends SQLiteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        Log.i(TAG, "ClockDbHelper.onUpgrade ... ");
+        Log.i(TAG, "AlarmDbHelper.onUpgrade ... ");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ALARM);
         onCreate(db);
     }
 
     public void insertAlarm(Alarm_class Alarm) {
-        Log.i(TAG, "ClockDbHelper.insertAlarm ... " + Alarm.getId());
+        Log.i(TAG, "AlarmDbHelper.insertAlarm ... " + Alarm.getId());
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_STATUS, Alarm.isOn_off());
         values.put(COLUMN_TIME, Alarm.getThoigian());
         values.put(COLUMN_TIMELONG, Alarm.getThoigian_long());
         db.insert(TABLE_ALARM, null, values);
+        db.close();
+    }
+    public void updateAlarm_isChecked(int id, boolean status){
+        Log.i(TAG, "ClockDbHelper.insertAlarm ... " + id);
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_STATUS, status);
+        db.update(TABLE_ALARM, values,COLUMN_ID + " = ?", new String[] { String.valueOf(id) });
         db.close();
     }
 
