@@ -6,23 +6,26 @@
     tools:context=".AlarmFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/timer_fragment"
-        android:textSize="30sp"/>
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:text="@string/timer_fragment"-->
+<!--        android:textSize="30sp"/>-->
 
     <RelativeLayout
-        android:layout_width="423dp"
-        android:layout_height="657dp">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/tvTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="90dp"
-            android:layout_marginTop="250dp"
+            android:layout_above="@+id/btnReset"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="109dp"
             android:text="00:00"
+            android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="60sp" />
 
@@ -30,6 +33,8 @@
             android:id="@+id/edtTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="90dp"
             android:layout_marginLeft="90dp"
             android:layout_marginTop="170dp"
             android:hint="Phút"
@@ -42,41 +47,46 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/edtTime"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="93dp"
+            android:layout_marginBottom="16dp"
             android:layout_toEndOf="@+id/edtTime"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/button"
             android:text="ĐẶT"
-            android:textColor="@color/black" />
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btnStartPause"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvTime"
-            android:layout_marginLeft="120dp"
-            android:backgroundTint="@color/white"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:backgroundTint="@color/button"
             android:text="BẮT ĐẦU"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:visibility="invisible"
-
             tools:visibility="visible" />
 
         <Button
             android:id="@+id/btnReset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvTime"
-            android:layout_marginStart="11dp"
-            android:layout_toEndOf="@+id/btnStartPause"
-            android:backgroundTint="@color/white"
+            android:layout_above="@+id/btnStartPause"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="150dp"
+            android:layout_marginEnd="177dp"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@color/button"
             android:text="ĐẶT LẠI"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:visibility="invisible"
             tools:visibility="visible" />
 
 
     </RelativeLayout>
-
-
 
 
 </FrameLayout>
