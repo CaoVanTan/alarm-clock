@@ -3,34 +3,68 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".ClockShowActivity"
     android:orientation="horizontal"
     android:paddingVertical="15dp"
     android:paddingHorizontal="15dp"
     android:weightSum="10">
 
-    <TextView
-        android:id="@+id/txtLocation1"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="7"
-        android:text="Hà Nội"
-        android:textSize="16sp"
-        android:textStyle="normal"
-        android:textColor="@color/black"
-        android:ellipsize="end"
-        android:maxLines="1" />
+        android:layout_weight="6"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/txtLocation1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:text="Hà Nội"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            android:textColor="@color/black"
+            android:ellipsize="end"
+            android:maxLines="1" />
 
-    <TextView
-        android:id="@+id/txtTime"
+        <TextView
+            android:id="@+id/txtCountry1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Việt Nam"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:text="Giờ"
-        android:textSize="16sp"
-        android:textStyle="normal"
-        android:textColor="@color/black"
-        android:gravity="right"/>
+        android:layout_weight="4"
+        android:orientation="vertical">
+        <TextClock
+            android:id="@+id/txtTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:format24Hour="kk:mm:ss"
+            android:textSize="18sp"
+            android:text="Giờ"
+            android:textStyle="normal"
+            android:textColor="@color/black"
+            android:gravity="right"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:id="@+id/txtTimeZone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="GMT"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            android:gravity="right"/>
+    </LinearLayout>
 
 </LinearLayout>

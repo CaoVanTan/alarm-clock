@@ -28,7 +28,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="0c8a2d46-bb85-4369-ab99-a57dc5d5bab5">
-      <console name="Connection" type="STANDARD" schema="main" session="Main" />
+      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from clock]]></console>
     </connection>
     <connection id="4b8a78d8-1375-49af-a7d3-36dd2774e5d0">
       <console name="Connection 1" type="STANDARD" schema="main" session="Main" />

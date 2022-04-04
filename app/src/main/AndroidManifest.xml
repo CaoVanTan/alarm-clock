@@ -17,9 +17,12 @@
             android:exported="false" />
         <activity
             android:name=".AddClockActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Thêm đồng hồ"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MainActivity"
+            android:label="Đồng hồ báo thức"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

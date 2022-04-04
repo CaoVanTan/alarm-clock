@@ -10,16 +10,18 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
-public class ClockDbHelper extends SQLiteOpenHelper {
+public class ClockDbHelper extends android.database.sqlite.SQLiteOpenHelper {
+    Context context;
     private static final String TAG = "ClockDbHelper";
     private static final String DATABASE_NAME = "Clock.db";
+    private static final int DATABASE_VERSION = 1;
     private static final String TABLE_CLOCK = "clock";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_NAME = "name";
     private static final String COLUMN_TIMEZONE = "timeZone";
 
     public ClockDbHelper(@Nullable Context context) {
-        super(context);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
@@ -39,34 +41,35 @@ public class ClockDbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public TimeZoneData getTimeZoneById(int id) {
+    public boolean getTimeZoneById(int id) {
         Log.i(TAG, "ClockDbHelper.getTimeZoneById ... " + id);
 
         SQLiteDatabase db = this.getReadableDatabase();
-
         Cursor cursor = db.query(TABLE_CLOCK, new String[] { COLUMN_ID, COLUMN_NAME, COLUMN_TIMEZONE }, COLUMN_ID + "= ?",
                                 new String[] { String.valueOf(id) }, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
 
-        TimeZoneData timeZone = new TimeZoneData(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2));
+        boolean check;
+        if (cursor.getCount() > 0) {
+            check = true;
+        } else {
+            check = false;
+        }
 
-        return timeZone;
+        return check;
     }
 
-    public ArrayList<TimeZoneData> getTimeZone() {
+    public ArrayList<ClockData> getTimeZone() {
         Log.i(TAG, "ClockDbHelper.getTimeZone ... ");
 
-        ArrayList<TimeZoneData> timeZoneList = new ArrayList<>();
+        ArrayList<ClockData> timeZoneList = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_CLOCK;
-
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                TimeZoneData timeZone = new TimeZoneData(cursor.getInt(0), cursor.getString(1), cursor.getString(2));
+                ClockData timeZone = new ClockData(cursor.getInt(0), cursor.getString(1), cursor.getString(2));
                 timeZoneList.add(timeZone);
             } while (cursor.moveToNext());
         }
@@ -74,31 +77,14 @@ public class ClockDbHelper extends SQLiteOpenHelper {
         return timeZoneList;
     }
 
-//    public void checkExistId(int id) {
-//        Log.i(TAG, "ClockDbHelper.checkExistId ... " + id);
-//
-//        SQLiteDatabase db = this.getReadableDatabase();
-//
-//        Cursor cursor = db.query(TABLE_CLOCK, new String[] { COLUMN_ID, COLUMN_NAME, COLUMN_TIMEZONE }, COLUMN_ID + "= ?",
-//                new String[] { String.valueOf(id) }, null, null, null, null);
-//        if (cursor != null)
-//            cursor.moveToFirst();
-//
-//        TimeZoneData timeZone = new TimeZoneData(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2));
-//
-//    }
-
-
-    public void insertClock(TimeZoneData timeZone) {
+    public void insertClock(ClockData timeZone) {
         Log.i(TAG, "ClockDbHelper.insertClock ... " + timeZone.getId());
 
         SQLiteDatabase db = this.getWritableDatabase();
-
         ContentValues values = new ContentValues();
         values.put(COLUMN_ID, timeZone.getId());
         values.put(COLUMN_NAME, timeZone.getName());
-        values.put(COLUMN_TIMEZONE, timeZone.getTime());
-
+        values.put(COLUMN_TIMEZONE, timeZone.getTimeZone());
         db.insert(TABLE_CLOCK, null, values);
 
         db.close();
@@ -109,6 +95,7 @@ public class ClockDbHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_CLOCK, COLUMN_ID + " = ?", new String[] { String.valueOf(id) });
+
         db.close();
     }
 }
