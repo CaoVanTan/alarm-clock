@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "983876658595",
+    "project_id": "alarmclock-35a6a",
+    "storage_bucket": "alarmclock-35a6a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:983876658595:android:a713fb09dfd49f3db96616",
+        "android_client_info": {
+          "package_name": "com.example.alarmclock"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "983876658595-uao3r4mvs9aa7g4ob3q9aa4opphvb5n7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNtv6ohbbbBsWNXt4LfH08VKAGIE7G9hQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "983876658595-uao3r4mvs9aa7g4ob3q9aa4opphvb5n7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

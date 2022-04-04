@@ -15,7 +15,8 @@
         android:background="#dbe9f6"
         app:tabBackground="@color/white"
         app:tabGravity="fill"
-
+        app:tabIndicatorColor="@color/bg_focus"
+        app:tabSelectedTextColor="@color/bg_focus"
         app:tabTextAppearance="@style/Theme.AlarmClock"
         app:tabTextColor="@color/black" />
 
@@ -26,6 +27,3 @@
     </androidx.viewpager.widget.ViewPager>
 
 </LinearLayout>
-
-<!--app:tabIndicatorColor="@color/red"
-        app:tabSelectedTextColor="@color/red"-->
