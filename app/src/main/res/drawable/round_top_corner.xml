@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <gradient
-        android:startColor="@color/bg_focus"
-        android:endColor="@color/bg_focus"
+        android:startColor="@color/button"
+        android:endColor="@color/button"
         android:angle="-90"/>
     <corners
         android:topLeftRadius="20dp"
