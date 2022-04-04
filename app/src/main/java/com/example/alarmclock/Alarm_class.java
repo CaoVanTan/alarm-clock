@@ -3,28 +3,23 @@ package com.example.alarmclock;
 public class Alarm_class {
     int Id;
     String Thoigian;
-    Long Thoigian_long;
+    int Gio;
+    int Phut;
     boolean On_off;
 
-    public Long getThoigian_long() {
-        return Thoigian_long;
+    public Alarm_class(String thoigian, int gio, int phut, boolean on_off) {
+        Thoigian = thoigian;
+        Gio = gio;
+        Phut = phut;
+        On_off = on_off;
     }
 
-    public Alarm_class(int id, String thoigian, Long thoigian_long, boolean on_off) {
+    public Alarm_class(int id, String thoigian, int gio, int phut, boolean on_off) {
         Id = id;
         Thoigian = thoigian;
-        Thoigian_long = thoigian_long;
+        Gio = gio;
+        Phut = phut;
         On_off = on_off;
-    }
-
-    public Alarm_class(String thoigian, Long thoigian_long, boolean on_off) {
-        Thoigian = thoigian;
-        Thoigian_long = thoigian_long;
-        On_off = on_off;
-    }
-
-    public void setThoigian_long(Long thoigian_long) {
-        Thoigian_long = thoigian_long;
     }
 
     public int getId() {
@@ -43,6 +38,22 @@ public class Alarm_class {
         Thoigian = thoigian;
     }
 
+    public int getGio() {
+        return Gio;
+    }
+
+    public void setGio(int gio) {
+        Gio = gio;
+    }
+
+    public int getPhut() {
+        return Phut;
+    }
+
+    public void setPhut(int phut) {
+        Phut = phut;
+    }
+
     public boolean isOn_off() {
         return On_off;
     }
@@ -51,3 +62,6 @@ public class Alarm_class {
         On_off = on_off;
     }
 }
+
+
+

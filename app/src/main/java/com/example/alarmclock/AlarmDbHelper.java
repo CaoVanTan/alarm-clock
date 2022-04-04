@@ -17,7 +17,8 @@ public class AlarmDbHelper extends SQLiteOpenHelper{
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_STATUS = "status";
     private static final String COLUMN_TIME = "time";
-    private static final String COLUMN_TIMELONG = "timelong";
+    private static final String COLUMN_TIMEHOUR = "timehour";
+    private static final String COLUMN_TIMEMINT = "timemint";
 
 
     public AlarmDbHelper(@Nullable Context context) {
@@ -26,12 +27,13 @@ public class AlarmDbHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.i(TAG, "ClockDbHelper.onCreate ... ");
+        Log.i(TAG, "AlarmDbHelper.onCreate ... ");
         String queryCreateTable = "CREATE TABLE " + TABLE_ALARM + "(" +
                 COLUMN_ID + " INTEGER PRIMARY KEY , " +
                 COLUMN_STATUS + " BOOlEAN NOT NULL, " +
                 COLUMN_TIME + " VARCHAR (255) NOT NULL, " +
-                COLUMN_TIMELONG + " LONG NOT NULL" + ")";
+                COLUMN_TIMEHOUR + " INTERGER NOT NULL, " +
+                COLUMN_TIMEMINT + " INTERGER NOT NULL" + ")";
         db.execSQL(queryCreateTable);
         super.onCreate(db);
     }
@@ -49,12 +51,13 @@ public class AlarmDbHelper extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         values.put(COLUMN_STATUS, Alarm.isOn_off());
         values.put(COLUMN_TIME, Alarm.getThoigian());
-        values.put(COLUMN_TIMELONG, Alarm.getThoigian_long());
+        values.put(COLUMN_TIMEMINT, Alarm.getPhut());
+        values.put(COLUMN_TIMEHOUR, Alarm.getGio());
         db.insert(TABLE_ALARM, null, values);
         db.close();
     }
     public void updateAlarm_isChecked(int id, boolean status){
-        Log.i(TAG, "ClockDbHelper.insertAlarm ... " + id);
+        Log.i(TAG, "AlarmDbHelper.updateAlarm ... " + id + String.valueOf(status) );
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_STATUS, status);
@@ -81,7 +84,7 @@ public class AlarmDbHelper extends SQLiteOpenHelper{
         if (cursor.moveToFirst()) {
             do {
                 boolean On_off = cursor.getInt(1) > 0;
-                Alarm_class Alarm = new Alarm_class(cursor.getInt(0), cursor.getString(2),cursor.getLong(3), On_off);
+                Alarm_class Alarm = new Alarm_class(cursor.getInt(0), cursor.getString(2),cursor.getInt(3), cursor.getInt(4), On_off);
                 alarm_ArrayList.add(Alarm);
             } while (cursor.moveToNext());
         }
@@ -89,11 +92,12 @@ public class AlarmDbHelper extends SQLiteOpenHelper{
         return alarm_ArrayList;
     }
 
-    public int getID(String time, long time_long){
-        Log.i(TAG, "ClockDbHelper.getIDbyHour");
+    public int getID(String time, int gio, int phut){
+        Log.i(TAG, "AlarmDbHelper.getIDbyHour_Min");
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_ALARM, new String[] { COLUMN_ID }, COLUMN_TIME + "= ?" + " AND " +COLUMN_TIMELONG + "= ?",
-                new String[] { time, String.valueOf(time_long) }, null, null, null, null);
+        Cursor cursor = db.query(TABLE_ALARM, new String[] { COLUMN_ID },
+                COLUMN_TIME + "= ?" + " AND " +COLUMN_TIMEHOUR + "= ?" +" AND " +COLUMN_TIMEMINT + "= ?",
+                new String[] { time, String.valueOf(gio), String.valueOf(phut) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
         Integer id = cursor.getInt(0);

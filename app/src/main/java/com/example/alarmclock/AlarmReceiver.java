@@ -14,10 +14,10 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Intent alarmIntent = new Intent( context, RingAlarm.class);
-        String extra = intent.getStringExtra("toggle");
-        String txt_extra = intent.getStringExtra("text");
-        alarmIntent.putExtra("toggle","extra");
-        Log.e("REciver","Đã chạy");
+        String toggle = intent.getExtras().getString("toggle");
+        String txt_extra = intent.getExtras().getString("text");
+        Log.e("REciver","Đã chạy" + txt_extra +" "+ toggle);
+        alarmIntent.putExtra("toggle",toggle);
         context.startService(alarmIntent);
         Intent i = new Intent(context,Destination.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -25,7 +25,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         String alarmTitle = "Báo thức";
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context,"Alarm")
                 .setContentTitle(alarmTitle)
-                .setContentText("Báo thức của bạn vào "+txt_extra+"!")
+                .setContentText("Báo thức của bạn vào "+txt_extra+" !")
                 .setSmallIcon(R.drawable.ic_alarm)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)

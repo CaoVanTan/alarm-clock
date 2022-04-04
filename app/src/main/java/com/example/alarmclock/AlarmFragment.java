@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -125,7 +127,8 @@ public class AlarmFragment extends Fragment {
                 switchCompat = (SwitchCompat) view.findViewById(R.id.SwitchAlarm);
                 Integer id = alarm_list.get(position).getId();
                 String date = alarm_list.get(position).getThoigian();
-                Long time_long = alarm_list.get(position).getThoigian_long();
+                Integer min = alarm_list.get(position).getPhut();
+                Integer hour = alarm_list.get(position).getGio();
                 Log.e("Id", id.toString());
                 switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
@@ -133,7 +136,7 @@ public class AlarmFragment extends Fragment {
                         Log.e("Id", id.toString());
                         if(isChecked == true)
                         {
-                            SetAlarm(time_long, date,id);
+                            SetAlarm(hour, min, date,id);
                             alarmDb.updateAlarm_isChecked(id,isChecked);
                         }
                         else {
@@ -152,8 +155,6 @@ public class AlarmFragment extends Fragment {
                 return false;
             }
         });
-
-
 
         btn_them.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,9 +182,9 @@ public class AlarmFragment extends Fragment {
                         calendar.set(Calendar.SECOND, 0);
                         String Time = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime());
                         Boolean On = true;
-                        Alarm_class new_alarm = new Alarm_class(Time,calendar.getTimeInMillis(), On);
+                        Alarm_class new_alarm = new Alarm_class(Time,timePicker.getCurrentHour(),timePicker.getCurrentMinute(), On);
                         alarmDb.insertAlarm(new_alarm);
-                        Integer Id = alarmDb.getID(Time,calendar.getTimeInMillis());
+                        Integer Id = alarmDb.getID(Time, timePicker.getCurrentHour(),timePicker.getCurrentMinute());
                         UpdateTimeText(Time, v.getContext());
                         Alarm(calendar, Id);
                         myDialog.dismiss();
@@ -226,25 +227,39 @@ public class AlarmFragment extends Fragment {
     {
         Intent intent = new Intent(getActivity(), AlarmReceiver.class);
         Log.e("Set New Alarm:", String.valueOf(i));
+        intent.putExtra("text", calendar.getTime().toString());
+        intent.putExtra("toggle","on");
         pendingIntent = PendingIntent.getBroadcast(myDialog.getContext(), i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
         if (calendar.before(Calendar.getInstance()))
         {
             calendar.add(Calendar.DATE, 1);
         }
+        Log.e("Thoi gian :", calendar.getTime().toString());
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),pendingIntent);
-        intent.putExtra("text",DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime()));
-        intent.putExtra("toggle","on");
+
     }
-    public void SetAlarm(Long time, String text ,int i)
+    public void SetAlarm(int gio, int phut , String text ,int i)
     {
+        Calendar setCalendar = Calendar.getInstance();
+        setCalendar.set(Calendar.HOUR, gio);
+        setCalendar.set(Calendar.MINUTE, phut);
+        setCalendar.set(Calendar.SECOND,0);
+        Log.e("Thoi gian :", setCalendar.getTime().toString());
         Log.e("SetAlarm", String.valueOf(i));
         Intent intent = new Intent(getActivity(), AlarmReceiver.class);
-        pendingIntent = PendingIntent.getBroadcast(myDialog.getContext(), i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, time,pendingIntent);
         intent.putExtra("text", text);
         intent.putExtra("toggle","on");
+        pendingIntent = PendingIntent.getBroadcast(myDialog.getContext(), i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+
+        if (setCalendar.before(Calendar.getInstance()))
+        {
+            setCalendar.add(Calendar.DATE, 1);
+            Log.e("Thoi gian :", setCalendar.getTime().toString());
+        }
+        alarmManager.set(AlarmManager.RTC_WAKEUP,setCalendar.getTimeInMillis(),pendingIntent);
+        
     }
     public void UpdateTimeText(String time, Context context)
     {
@@ -259,10 +274,9 @@ public class AlarmFragment extends Fragment {
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
         intent.putExtra("toggle","off");
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
     public void LoadListView(ListView listView_alarm){
-        ArrayList<Alarm_class> alarm_list;
-        ListAdapter_Alarm alarm_Adapter;
         alarm_list = alarmDb.getAlarm();
         alarm_Adapter = new ListAdapter_Alarm(getContext(), R.layout.list_view_alarrm, alarm_list);
         listView_alarm.setAdapter(alarm_Adapter);

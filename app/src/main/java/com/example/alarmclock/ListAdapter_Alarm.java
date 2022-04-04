@@ -41,7 +41,6 @@ public class ListAdapter_Alarm extends ArrayAdapter<Alarm_class> {
 
             txt1.setText(a.Thoigian);
             txt_Id.setText(""+a.Id);
-            txt_Longtime.setText(""+a.Thoigian_long);
             switchCompat.setChecked(a.On_off);
         }
         return v;
