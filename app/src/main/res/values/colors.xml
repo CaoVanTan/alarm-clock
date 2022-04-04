@@ -8,11 +8,10 @@
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-
+    <color name="button_main">#69BDFF</color>
     <color name="bg_main1">#EBEDF9</color>
     <color name="bg_main2">#DCE1FC</color>
-
+    <color name="button">#43C6AC</color>
     <color name="bg_nonfocus">#F0F6FB</color>
-
     <color name="bg_focus">#412DA8</color>
 </resources>

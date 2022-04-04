@@ -31,6 +31,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.content.res.AssetManager;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -56,7 +59,7 @@ public class AlarmFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    Button btn_them;
+    FloatingActionButton btn_them;
     Dialog myDialog;
     Button btn_Huy;
     Button btn_Ok;

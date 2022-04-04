@@ -6,41 +6,40 @@
     android:layout_height="match_parent"
     tools:context=".AlarmFragment">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/alarm_fragment"
-        android:textSize="30sp"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <TextView-->
+<!--        android:id="@+id/textView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/alarm_fragment"-->
+<!--        android:textSize="30sp"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <ListView
 
         android:id="@+id/list_alarm"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintVertical_bias="1.0">
 
     </ListView>
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/Add_alarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@drawable/round_bottom_corner"
-        android:backgroundTint="@color/bg_nonfocus"
-        android:backgroundTintMode="add"
-        android:text="Thêm"
-        android:textColor="@color/black"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/list_alarm"
-        app:layout_constraintEnd_toEndOf="parent"></Button>
-
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_add"
+        android:backgroundTint="@color/button"
+        app:borderWidth="0dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

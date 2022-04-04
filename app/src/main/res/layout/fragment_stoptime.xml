@@ -14,7 +14,6 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
-
     android:textAppearance="@android:style/TextAppearance.Large"
     android:textSize="60dp" />
 
@@ -22,6 +21,7 @@
     android:id="@+id/start_button"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+        android:backgroundTint="@color/button"
     android:layout_gravity="center_horizontal"
     android:layout_marginTop="20dp"
 
@@ -33,7 +33,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:layout_marginTop="8dp"
-
+        android:backgroundTint="@color/button"
     android:onClick="onClickStop"
     android:text="@string/stop" />
 
@@ -43,7 +43,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:layout_marginTop="8dp"
-
+        android:backgroundTint="@color/button"
     android:onClick="onClickReset"
     android:text="@string/reset" />
 </LinearLayout>
