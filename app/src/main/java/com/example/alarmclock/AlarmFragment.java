@@ -273,12 +273,16 @@ public class AlarmFragment extends Fragment {
     public void CancelAlarm( int i){
         Log.e("CancelAlarm: ", String.valueOf(i));
         Intent intent = new Intent(getActivity(), AlarmReceiver.class);
+        intent.putExtra("toggle","off");
         pendingIntent = PendingIntent.getBroadcast(myDialog.getContext(), i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
-        intent.putExtra("toggle","off");
-        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+        getContext().sendBroadcast(intent);
     }
+
+    private void sendBroadcast(Intent intent) {
+    }
+
     public void LoadListView(ListView listView_alarm){
         alarm_list = alarmDb.getAlarm();
         alarm_Adapter = new ListAdapter_Alarm(getContext(), R.layout.list_view_alarrm, alarm_list);
