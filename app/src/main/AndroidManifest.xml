@@ -33,7 +33,9 @@
 
         <receiver android:name=".AlarmReceiver"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true"
+            ></receiver>
+        <service android:name=".RingAlarm"></service>
     </application>
 
 </manifest>
