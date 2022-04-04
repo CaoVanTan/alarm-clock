@@ -3,28 +3,24 @@ package com.example.alarmclock;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 public class TimeZoneAdapter extends RecyclerView.Adapter<TimeZoneAdapter.TimeZoneViewHolder> {
     private Context context;
-    private ArrayList<TimeZoneData> timeZoneList;
+    private ArrayList<ClockData> timeZoneList;
     ClockDbHelper db;
 
-    public TimeZoneAdapter(Context context, ArrayList<TimeZoneData> timeZoneList) {
+    public TimeZoneAdapter(Context context, ArrayList<ClockData> timeZoneList) {
         this.timeZoneList = timeZoneList;
         this.context = context;
     }
@@ -48,11 +44,11 @@ public class TimeZoneAdapter extends RecyclerView.Adapter<TimeZoneAdapter.TimeZo
         holder.layoutShowTimeZone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TimeZoneData timeZoneData;
+                ClockData clockData;
 
                 if (!db.getTimeZoneById(position)) {
-                    timeZoneData = new TimeZoneData(timeZoneList.get(position).getId(), timeZoneList.get(position).getName(), timeZoneList.get(position).getTimeZone());
-                    db.insertClock(timeZoneData);
+                    clockData = new ClockData(timeZoneList.get(position).getId(), timeZoneList.get(position).getName(), timeZoneList.get(position).getTimeZone());
+                    db.insertClock(clockData);
                     Toast.makeText(context, "Thêm thành công!", Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(context, ClockFragment.class);
@@ -133,7 +129,7 @@ public class TimeZoneAdapter extends RecyclerView.Adapter<TimeZoneAdapter.TimeZo
         return displayName;
     }
 
-    public void filterList(ArrayList<TimeZoneData> filteredList) {
+    public void filterList(ArrayList<ClockData> filteredList) {
         timeZoneList = filteredList;
         notifyDataSetChanged();
     }

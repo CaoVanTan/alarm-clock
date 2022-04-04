@@ -1,21 +1,13 @@
 package com.example.alarmclock;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,7 +21,7 @@ public class AddClockActivity extends AppCompatActivity {
     TimeZone timeZone;
     Date now;
     String[] listItems;
-    ArrayList<TimeZoneData> timeZoneList;
+    ArrayList<ClockData> timeZoneList;
     TimeZoneAdapter timeZoneAdapter;
     RecyclerView.LayoutManager layoutManager;
 
@@ -67,8 +59,8 @@ public class AddClockActivity extends AppCompatActivity {
         for (int i = 0; i < listItems.length; ++i) {
             timeZone = TimeZone.getTimeZone(listItems[i]);
             dateFormat.setTimeZone(timeZone);
-            TimeZoneData timeZoneData = new TimeZoneData(i, listItems[i], dateFormat.format(now));
-            timeZoneList.add(timeZoneData);
+            ClockData clockData = new ClockData(i, listItems[i], dateFormat.format(now));
+            timeZoneList.add(clockData);
         }
     }
 
@@ -82,9 +74,9 @@ public class AddClockActivity extends AppCompatActivity {
     }
 
     private void filter(String text) {
-        ArrayList<TimeZoneData> filteredList = new ArrayList<>();
+        ArrayList<ClockData> filteredList = new ArrayList<>();
 
-        for (TimeZoneData timezone : timeZoneList) {
+        for (ClockData timezone : timeZoneList) {
             if (getDisplayName(timezone.getName()).toLowerCase().contains(text.toLowerCase())) {
                 filteredList.add(timezone);
             }

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -59,10 +58,10 @@ public class ClockDbHelper extends android.database.sqlite.SQLiteOpenHelper {
         return check;
     }
 
-    public ArrayList<TimeZoneData> getTimeZone() {
+    public ArrayList<ClockData> getTimeZone() {
         Log.i(TAG, "ClockDbHelper.getTimeZone ... ");
 
-        ArrayList<TimeZoneData> timeZoneList = new ArrayList<>();
+        ArrayList<ClockData> timeZoneList = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_CLOCK;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -70,7 +69,7 @@ public class ClockDbHelper extends android.database.sqlite.SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                TimeZoneData timeZone = new TimeZoneData(cursor.getInt(0), cursor.getString(1), cursor.getString(2));
+                ClockData timeZone = new ClockData(cursor.getInt(0), cursor.getString(1), cursor.getString(2));
                 timeZoneList.add(timeZone);
             } while (cursor.moveToNext());
         }
@@ -78,7 +77,7 @@ public class ClockDbHelper extends android.database.sqlite.SQLiteOpenHelper {
         return timeZoneList;
     }
 
-    public void insertClock(TimeZoneData timeZone) {
+    public void insertClock(ClockData timeZone) {
         Log.i(TAG, "ClockDbHelper.insertClock ... " + timeZone.getId());
 
         SQLiteDatabase db = this.getWritableDatabase();

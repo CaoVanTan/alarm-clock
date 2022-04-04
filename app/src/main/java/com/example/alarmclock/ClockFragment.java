@@ -21,7 +21,7 @@ public class ClockFragment extends Fragment {
     private View view;
     FloatingActionButton btnAddClock;
     ListView lvClock;
-    ArrayList<TimeZoneData> timeZoneList;
+    ArrayList<ClockData> timeZoneList;
     ClockAdapter clockArrayAdapter;
     ClockDbHelper db;
 

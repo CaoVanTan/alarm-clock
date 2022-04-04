@@ -1,7 +1,6 @@
 package com.example.alarmclock;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,20 +11,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
 
-public class ClockAdapter extends ArrayAdapter<TimeZoneData> {
+public class ClockAdapter extends ArrayAdapter<ClockData> {
     Context context;
-    ArrayList<TimeZoneData> arrayList;
+    ArrayList<ClockData> arrayList;
     int layoutResource;
     ClockDbHelper db;
 
-    public ClockAdapter(Context context, int resource, ArrayList<TimeZoneData> objects) {
+    public ClockAdapter(Context context, int resource, ArrayList<ClockData> objects) {
         super(context, resource, objects);
         this.context = context;
         this.layoutResource = resource;
