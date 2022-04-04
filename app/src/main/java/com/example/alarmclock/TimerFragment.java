@@ -212,12 +212,12 @@ public class TimerFragment extends Fragment {
             edtTimeCountDown.setVisibility(View.INVISIBLE);
             btnSetCountDown.setVisibility(View.INVISIBLE);
             btnResetCountDown.setVisibility(View.INVISIBLE);
-            btnStartPauseCountDown.setText("Pause");
+            btnStartPauseCountDown.setText("DỪNG");
         }
         else{
             edtTimeCountDown.setVisibility(View.VISIBLE);
             btnSetCountDown.setVisibility(View.VISIBLE);
-            btnStartPauseCountDown.setText("Start");
+            btnStartPauseCountDown.setText("BẮT ĐẦU");
             if(TimeLeftInMillis < 1000){
                 btnStartPauseCountDown.setVisibility(View.INVISIBLE);
             }

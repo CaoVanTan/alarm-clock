@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="90dp"
             android:layout_marginTop="170dp"
-            android:hint="Minutes"
+            android:hint="Phút"
             android:inputType="number"
             android:maxLength="4"
             android:textSize="40sp" />
@@ -44,7 +44,7 @@
             android:layout_alignBottom="@+id/edtTime"
             android:layout_toEndOf="@+id/edtTime"
             android:backgroundTint="@color/white"
-            android:text="SET"
+            android:text="ĐẶT"
             android:textColor="@color/black" />
 
         <Button
@@ -54,7 +54,7 @@
             android:layout_below="@+id/tvTime"
             android:layout_marginLeft="120dp"
             android:backgroundTint="@color/white"
-            android:text="START"
+            android:text="BẮT ĐẦU"
             android:textColor="@color/black"
             android:visibility="invisible"
 
@@ -68,7 +68,7 @@
             android:layout_marginStart="11dp"
             android:layout_toEndOf="@+id/btnStartPause"
             android:backgroundTint="@color/white"
-            android:text="RESET"
+            android:text="ĐẶT LẠI"
             android:textColor="@color/black"
             android:visibility="invisible"
             tools:visibility="visible" />
