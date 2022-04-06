@@ -8,7 +8,6 @@
     android:orientation="horizontal"
     android:paddingVertical="15dp"
     android:paddingHorizontal="15dp"
-    android:background="@color/bg_main1"
     android:weightSum="10">
 
     <LinearLayout
