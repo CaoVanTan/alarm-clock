@@ -27,7 +27,7 @@ public class RingAlarm  extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
         String get_toggle = intent.getExtras().getString("toggle");
-        alarmPlayer = MediaPlayer.create(this,R.raw.alarm);
+
         if(get_toggle.equals("on"))
         {
             id = 1;
@@ -38,15 +38,17 @@ public class RingAlarm  extends Service {
         }
         if(id == 1 )
         {
+            alarmPlayer = MediaPlayer.create(this,R.raw.alarm);
             alarmPlayer.start();
             alarmPlayer.setLooping(true);
             id = 0;
             Log.i("Id", String.valueOf(id));
         }else if(id == 0)
         {
+            alarmPlayer.setLooping(false);
             alarmPlayer.stop();
-//            alarmPlayer.reset();
-            Log.i("Id", String.valueOf(id));
+            alarmPlayer.reset();
+            Log.i("Id 2", String.valueOf(id));
         }
         return START_NOT_STICKY;
     }
