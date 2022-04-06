@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.alarmclock">
-<uses-permission android:name="com.android.alarm.permission.SET_ALARM"></uses-permission>
+
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"></uses-permission>
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_alarm"
@@ -19,11 +21,12 @@
             android:name=".AddClockActivity"
             android:exported="false"
             android:label="Thêm đồng hồ"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity" >
+        </activity>
         <activity
             android:name=".MainActivity"
-            android:label="Đồng hồ báo thức"
-            android:exported="true">
+            android:exported="true"
+            android:label="Đồng hồ báo thức">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,10 +34,10 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".AlarmReceiver"
+        <receiver
+            android:name=".AlarmReceiver"
             android:enabled="true"
-            android:exported="true"
-            ></receiver>
+            android:exported="true"></receiver>
         <service android:name=".RingAlarm"></service>
     </application>
 

@@ -48,17 +48,6 @@ public class ClockAdapter extends ArrayAdapter<ClockData> {
         return convertView;
     }
 
-    private String getDisplayName(String timeZoneName) {
-        String displayName = timeZoneName;
-        int sep = timeZoneName.indexOf("/");
-        if (sep != -1) {
-            displayName = timeZoneName.substring(0, sep) + ", " + timeZoneName.substring(sep + 1);
-            displayName = displayName.replace("_", " ");
-        }
-
-        return displayName;
-    }
-
     private String getLocation(String timeZoneName) {
         String displayName = timeZoneName;
         StringBuilder str = new StringBuilder(timeZoneName);

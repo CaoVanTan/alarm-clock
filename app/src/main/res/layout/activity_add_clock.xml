@@ -16,7 +16,7 @@
         android:background="@drawable/custom_input_search"
         android:drawableStart="@drawable/ic_search"
         android:drawablePadding="5dp"
-        android:hint="Thành phố"
+        android:hint="Khu vực"
         android:paddingHorizontal="10dp"
         android:paddingVertical="10dp"
         android:textStyle="normal"
